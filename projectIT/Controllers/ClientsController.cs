@@ -10,115 +10,107 @@ using projectIT.Models;
 
 namespace projectIT.Controllers
 {
-    public class PerformancesController : Controller
+    public class ClientsController : Controller
     {
         private projectContext db = new projectContext();
 
-        // GET: Performances
+        // GET: Clients
         public ActionResult Index()
         {
-            var performances = db.Performances.Include(p => p.Building);
-            return View(performances.ToList());
+            return View(db.Clients.ToList());
         }
 
-        // GET: Performances/Details/5
+        // GET: Clients/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //Performance performance = db.Performances.Find(id);
-            var performance = db.Performances.Include(p => p.Building).Where(p => p.PerformanceId == id).Single();
-                
-            if (performance == null)
+            Client client = db.Clients.Find(id);
+            if (client == null)
             {
                 return HttpNotFound();
             }
-            
-            return View(performance);
+            return View(client);
         }
 
-        // GET: Performances/Create
+        // GET: Clients/Create
         public ActionResult Create()
         {
-            ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "BuildingName");
             return View();
         }
 
-        // POST: Performances/Create
+        // POST: Clients/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PerformanceId,PerformanceName,Description,BuildingId,PerformanceDateTime")] Performance performance)
+        public ActionResult Create([Bind(Include = "ClientId,Name,Surname,email")] Client client)
         {
             if (ModelState.IsValid)
             {
-                db.Performances.Add(performance);
+                db.Clients.Add(client);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "BuildingName", performance.BuildingId);
-            return View(performance);
+            return View(client);
         }
 
-        // GET: Performances/Edit/5
+        // GET: Clients/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Performance performance = db.Performances.Find(id);
-            if (performance == null)
+            Client client = db.Clients.Find(id);
+            if (client == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "BuildingName", performance.BuildingId);
-            return View(performance);
+            return View(client);
         }
 
-        // POST: Performances/Edit/5
+        // POST: Clients/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PerformanceId,PerformanceName,Description,BuildingId,PerformanceDateTime")] Performance performance)
+        public ActionResult Edit([Bind(Include = "ClientId,Name,Surname,email")] Client client)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(performance).State = EntityState.Modified;
+                db.Entry(client).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "BuildingName", performance.BuildingId);
-            return View(performance);
+            return View(client);
         }
 
-        // GET: Performances/Delete/5
+        // GET: Clients/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Performance performance = db.Performances.Find(id);
-            if (performance == null)
+            Client client = db.Clients.Find(id);
+            if (client == null)
             {
                 return HttpNotFound();
             }
-            return View(performance);
+            return View(client);
         }
 
-        // POST: Performances/Delete/5
+        // POST: Clients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Performance performance = db.Performances.Find(id);
-            db.Performances.Remove(performance);
+            Client client = db.Clients.Find(id);
+            db.Clients.Remove(client);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

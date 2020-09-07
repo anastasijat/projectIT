@@ -10,115 +10,116 @@ using projectIT.Models;
 
 namespace projectIT.Controllers
 {
-    public class PerformancesController : Controller
+    public class ReservationsController : Controller
     {
         private projectContext db = new projectContext();
 
-        // GET: Performances
+        // GET: Reservations
         public ActionResult Index()
         {
-            var performances = db.Performances.Include(p => p.Building);
-            return View(performances.ToList());
+            var reservations = db.Reservations.Include(r => r.Client).Include(r => r.Seat);
+            return View(reservations.ToList());
         }
 
-        // GET: Performances/Details/5
+        // GET: Reservations/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //Performance performance = db.Performances.Find(id);
-            var performance = db.Performances.Include(p => p.Building).Where(p => p.PerformanceId == id).Single();
-                
-            if (performance == null)
+            Reservation reservation = db.Reservations.Find(id);
+            if (reservation == null)
             {
                 return HttpNotFound();
             }
-            
-            return View(performance);
+            return View(reservation);
         }
 
-        // GET: Performances/Create
+        // GET: Reservations/Create
         public ActionResult Create()
         {
-            ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "BuildingName");
+            ViewBag.ClientId = new SelectList(db.Clients, "ClientId", "Name");
+            ViewBag.SeatId = new SelectList(db.Seats, "SeatId", "SeatId");
             return View();
         }
 
-        // POST: Performances/Create
+        // POST: Reservations/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PerformanceId,PerformanceName,Description,BuildingId,PerformanceDateTime")] Performance performance)
+        public ActionResult Create([Bind(Include = "ReservationId,ClientId,SeatId")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
-                db.Performances.Add(performance);
+                db.Reservations.Add(reservation);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "BuildingName", performance.BuildingId);
-            return View(performance);
+            ViewBag.ClientId = new SelectList(db.Clients, "ClientId", "Name", reservation.ClientId);
+            ViewBag.SeatId = new SelectList(db.Seats, "SeatId", "SeatId", reservation.SeatId);
+            return View(reservation);
         }
 
-        // GET: Performances/Edit/5
+        // GET: Reservations/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Performance performance = db.Performances.Find(id);
-            if (performance == null)
+            Reservation reservation = db.Reservations.Find(id);
+            if (reservation == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "BuildingName", performance.BuildingId);
-            return View(performance);
+            ViewBag.ClientId = new SelectList(db.Clients, "ClientId", "Name", reservation.ClientId);
+            ViewBag.SeatId = new SelectList(db.Seats, "SeatId", "SeatId", reservation.SeatId);
+            return View(reservation);
         }
 
-        // POST: Performances/Edit/5
+        // POST: Reservations/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PerformanceId,PerformanceName,Description,BuildingId,PerformanceDateTime")] Performance performance)
+        public ActionResult Edit([Bind(Include = "ReservationId,ClientId,SeatId")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(performance).State = EntityState.Modified;
+                db.Entry(reservation).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "BuildingName", performance.BuildingId);
-            return View(performance);
+            ViewBag.ClientId = new SelectList(db.Clients, "ClientId", "Name", reservation.ClientId);
+            ViewBag.SeatId = new SelectList(db.Seats, "SeatId", "SeatId", reservation.SeatId);
+            return View(reservation);
         }
 
-        // GET: Performances/Delete/5
+        // GET: Reservations/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Performance performance = db.Performances.Find(id);
-            if (performance == null)
+            Reservation reservation = db.Reservations.Find(id);
+            if (reservation == null)
             {
                 return HttpNotFound();
             }
-            return View(performance);
+            return View(reservation);
         }
 
-        // POST: Performances/Delete/5
+        // POST: Reservations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Performance performance = db.Performances.Find(id);
-            db.Performances.Remove(performance);
+            Reservation reservation = db.Reservations.Find(id);
+            db.Reservations.Remove(reservation);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

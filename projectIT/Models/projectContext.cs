@@ -8,7 +8,7 @@ namespace projectIT.Models
 {
     public class projectContext:DbContext
     {
-        DbSet<Client> Clients { get; set; }
+        //DbSet<Client> Clients { get; set; }
         
         //DbSet<Seat> Seats{ get; set; }
 
@@ -25,5 +25,7 @@ namespace projectIT.Models
         public System.Data.Entity.DbSet<projectIT.Models.Performance> Performances { get; set; }
 
         public System.Data.Entity.DbSet<projectIT.Models.Seat> Seats { get; set; }
+        public System.Data.Entity.DbSet<projectIT.Models.Client> Clients { get; set; }
+        public System.Data.Entity.DbSet<projectIT.Models.Reservation> Reservations { get; set; }
     }
 }

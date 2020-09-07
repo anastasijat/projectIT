@@ -15,7 +15,9 @@ namespace projectIT.Models
         public string BuildingName { get; set; }
         
         
-        public int Status { get; set; }//1- teatar, 2-balet
+        public string Status { get; set; }//1- teatar, 2-balet
+
+
         [Required]
         
         public int NumberOfSeats { get; set; }

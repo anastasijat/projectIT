@@ -48,7 +48,7 @@ namespace projectIT.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SeatId,status,PerformanceId")] Seat seat)
+        public ActionResult Create([Bind(Include = "SeatId,SeatNumber,status,PerformanceId")] Seat seat)
         {
             if (ModelState.IsValid)
             {
@@ -82,7 +82,7 @@ namespace projectIT.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "SeatId,status,PerformanceId")] Seat seat)
+        public ActionResult Edit([Bind(Include = "SeatId,SeatNumber,status,PerformanceId")] Seat seat)
         {
             if (ModelState.IsValid)
             {

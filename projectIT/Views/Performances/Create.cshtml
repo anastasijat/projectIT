@@ -42,12 +42,10 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PerformanceDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.PerformanceDateTime, htmlAttributes: new { @id = "PerformanceDateTime" })
-                @Html.ValidationMessageFor(model => model.PerformanceDateTime)
+                @Html.EditorFor(model => model.PerformanceDateTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PerformanceDateTime, "", new { @class = "text-danger" })
             </div>
-
-
-            </div>
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -63,19 +61,4 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#PerformanceDateTime').datepicker({
-            dateFormat: "dd/mm/yyyy  HH:mm",
-            showStatus: true,
-            showWeeks: true,
-            currentText: 'Now',
-            autoSize: true,
-            gotoCurrent: true,
-            showAnim: 'blind',
-            highlightWeek: true
-        });
-    });
-</script>
 }

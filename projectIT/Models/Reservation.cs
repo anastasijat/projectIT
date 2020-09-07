@@ -6,18 +6,14 @@ using System.Web;
 
 namespace projectIT.Models
 {
-    public class Seat
+    public class Reservation
     {
         [Key]
+        public int ReservationId { get; set; }
+        public int ClientId { get; set; }
         public int SeatId { get; set; }
+        public Client Client { get; set; }
+        public Seat Seat { get; set; }
 
-        public int SeatNumber { get; set; }
-
-        public Boolean status { get; set; }
-
-        public int PerformanceId { get; set; }
-        
-        public Performance Performance { get; set; }
-        
     }
 }
