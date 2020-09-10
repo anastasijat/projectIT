@@ -11,10 +11,15 @@ namespace projectIT.Models
         [Key]
         public int ReservationId { get; set; }
         public int ClientId { get; set; }
-        public int SeatId { get; set; }
+       
         public Client Client { get; set; }
 
-        public Seat Seat { get; set; }
+        public virtual List<Seat> Seats { get; set; }
+
+        public Reservation()
+        {
+            Seats = new List<Seat>();
+        }
 
 
     }

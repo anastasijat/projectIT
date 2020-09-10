@@ -17,7 +17,7 @@ namespace projectIT.Controllers
         // GET: Reservations
         public ActionResult Index()
         {
-            var reservations = db.Reservations.Include(r => r.Client).Include(r => r.Seat);
+            var reservations = db.Reservations.Include(r => r.Client);
             return View(reservations.ToList());
         }
 
@@ -39,13 +39,15 @@ namespace projectIT.Controllers
         // GET: Reservations/Create
         public ActionResult Create(int? id)
         {
-            
+            /*ViewBag.ClientId = new SelectList(db.Clients, "ClientId", "Name");
+            return View();*/
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             //Performance performance = db.Performances.Find(id);
-            var performance = db.Performances.Include(p => p.Seats).Include(p=>p.Building).Where(p => p.PerformanceId == id).Single();
+            var performance = db.Performances.Include(p => p.Seats).Include(p => p.Building).Where(p => p.PerformanceId == id).Single();
 
             if (performance == null)
             {
@@ -53,9 +55,6 @@ namespace projectIT.Controllers
             }
 
             return View(performance);
-
-
-
         }
 
         // POST: Reservations/Create
@@ -63,7 +62,7 @@ namespace projectIT.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ReservationId,ClientId,SeatId")] Reservation reservation)
+        public ActionResult Create([Bind(Include = "ReservationId,ClientId")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
@@ -73,7 +72,6 @@ namespace projectIT.Controllers
             }
 
             ViewBag.ClientId = new SelectList(db.Clients, "ClientId", "Name", reservation.ClientId);
-            ViewBag.SeatId = new SelectList(db.Seats, "SeatId", "SeatId", reservation.SeatId);
             return View(reservation);
         }
 
@@ -90,7 +88,6 @@ namespace projectIT.Controllers
                 return HttpNotFound();
             }
             ViewBag.ClientId = new SelectList(db.Clients, "ClientId", "Name", reservation.ClientId);
-            ViewBag.SeatId = new SelectList(db.Seats, "SeatId", "SeatId", reservation.SeatId);
             return View(reservation);
         }
 
@@ -99,7 +96,7 @@ namespace projectIT.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ReservationId,ClientId,SeatId")] Reservation reservation)
+        public ActionResult Edit([Bind(Include = "ReservationId,ClientId")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
@@ -108,7 +105,6 @@ namespace projectIT.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.ClientId = new SelectList(db.Clients, "ClientId", "Name", reservation.ClientId);
-            ViewBag.SeatId = new SelectList(db.Seats, "SeatId", "SeatId", reservation.SeatId);
             return View(reservation);
         }
 
