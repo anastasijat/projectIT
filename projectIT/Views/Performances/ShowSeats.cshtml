@@ -1,19 +1,12 @@
 ﻿@model projectIT.Models.Performance
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "ShowSeats";
 }
 
-<h2>Резервација</h2>
+<h2>ShowSeats</h2>
 
 <div>
-
-    <h1>Име на претстава: @Model.PerformanceName</h1>
-    <h1>Датум на одржување: @Model.PerformanceDateTime</h1>
-    <h1>Место на одржување: @Model.Building.BuildingName</h1>
-
-
-
 
     <ul>
         @foreach (projectIT.Models.Seat p in Model.Seats)

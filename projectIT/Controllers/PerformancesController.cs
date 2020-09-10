@@ -148,6 +148,24 @@ namespace projectIT.Controllers
             return RedirectToAction("Index");
         }
 
+
+       /* public ActionResult ShowSeats(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            //Performance performance = db.Performances.Find(id);
+            var performance = db.Performances.Include(p => p.Seats).Where(p => p.PerformanceId == id).Single();
+
+            if (performance == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(performance);
+        }*/
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -41,9 +41,16 @@
             @Html.DisplayFor(modelItem => item.PerformanceDateTime)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PerformanceId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PerformanceId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PerformanceId })
+            @Html.ActionLink("Edit", "Edit", new { id = item.PerformanceId }) |
+            @Html.ActionLink("Details", "Details", new { id = item.PerformanceId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.PerformanceId })
+            @Html.ActionLink("Резервирај", "Create", "Reservations", new { id = item.PerformanceId }, null)
+
+
+
+
+
+
         </td>
     </tr>
 }

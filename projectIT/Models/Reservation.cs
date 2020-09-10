@@ -13,7 +13,9 @@ namespace projectIT.Models
         public int ClientId { get; set; }
         public int SeatId { get; set; }
         public Client Client { get; set; }
+
         public Seat Seat { get; set; }
+
 
     }
 }

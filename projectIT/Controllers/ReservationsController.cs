@@ -37,11 +37,25 @@ namespace projectIT.Controllers
         }
 
         // GET: Reservations/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            ViewBag.ClientId = new SelectList(db.Clients, "ClientId", "Name");
-            ViewBag.SeatId = new SelectList(db.Seats, "SeatId", "SeatId");
-            return View();
+            
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            //Performance performance = db.Performances.Find(id);
+            var performance = db.Performances.Include(p => p.Seats).Include(p=>p.Building).Where(p => p.PerformanceId == id).Single();
+
+            if (performance == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(performance);
+
+
+
         }
 
         // POST: Reservations/Create
