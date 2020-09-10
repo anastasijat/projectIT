@@ -18,6 +18,18 @@ namespace projectIT.Models
         public int PerformanceId { get; set; }
         
         public Performance Performance { get; set; }
+
+        public Seat()
+        {
+
+        }
+        public Seat(int SeatNumber, int PerformanceId,Performance Performance)
+        {
+            this.SeatNumber = SeatNumber;
+            this.status = false;
+            this.PerformanceId = PerformanceId;
+            this.Performance = Performance;
+        }
         
     }
 }

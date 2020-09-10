@@ -57,12 +57,35 @@ namespace projectIT.Controllers
             {
                 db.Performances.Add(performance);
                 db.SaveChanges();
+
+                var performanceAndBuilding = db.Performances.Include(p => p.Building).Where(p => p.PerformanceId == performance.PerformanceId).Single();
+
+                //int num = performance.Building.NumberOfSeats;
+
+                IList<Seat> seatList = new List<Seat>();
+
+
+
+                for(int i=0;i<performanceAndBuilding.Building.NumberOfSeats;i++)
+                {
+                    seatList.Add(new Seat(i, performance.PerformanceId, performance));
+                }
+
+                //seatList.Add(new Seat() { PerformanceId = 1, SeatNumber = 1, status = false, Performance = performance });
+                db.Seats.AddRange(seatList);
+                db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 
             ViewBag.BuildingId = new SelectList(db.Buildings, "BuildingId", "BuildingName", performance.BuildingId);
+
             return View(performance);
         }
+
+
+
+
 
         // GET: Performances/Edit/5
         public ActionResult Edit(int? id)
@@ -104,7 +127,9 @@ namespace projectIT.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Performance performance = db.Performances.Find(id);
+           // Performance performance = db.Performances.Find(id);
+
+            var performance = db.Performances.Include(p => p.Building).Where(p => p.PerformanceId == id).Single();
             if (performance == null)
             {
                 return HttpNotFound();

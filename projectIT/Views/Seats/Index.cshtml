@@ -32,7 +32,18 @@
             @Html.DisplayFor(modelItem => item.SeatNumber)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.status)
+           
+            @if(item.status==true)
+            {
+               <p>зафатено</p>
+            }
+            else
+            {
+               <p>слободно</p>
+            }
+            
+            
+           
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.SeatId }) |
