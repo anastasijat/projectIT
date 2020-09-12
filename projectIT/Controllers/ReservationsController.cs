@@ -17,7 +17,7 @@ namespace projectIT.Controllers
         // GET: Reservations
         public ActionResult Index()
         {
-            var reservations = db.Reservations.Include(r => r.Client);
+            var reservations = db.Reservations.Include(r => r.Client).Include(r => r.Seat);
             return View(reservations.ToList());
         }
 
@@ -39,22 +39,21 @@ namespace projectIT.Controllers
         // GET: Reservations/Create
         public ActionResult Create(int? id)
         {
-            /*ViewBag.ClientId = new SelectList(db.Clients, "ClientId", "Name");
-            return View();*/
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             //Performance performance = db.Performances.Find(id);
             var performance = db.Performances.Include(p => p.Seats).Include(p => p.Building).Where(p => p.PerformanceId == id).Single();
-
+            SeatListModel model = new SeatListModel();
+            model.Performance = performance;
+            model.availableSeats = performance.Seats;
             if (performance == null)
             {
                 return HttpNotFound();
             }
 
-            return View(performance);
+            return View(model);
         }
 
         // POST: Reservations/Create
@@ -62,7 +61,77 @@ namespace projectIT.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ReservationId,ClientId")] Reservation reservation)
+        public ActionResult Create(SeatListModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                //var seats = string.Join(",", model.selectedSeats);
+                IList<int> seats = model.selectedSeats;
+                for(int i=0;i<seats.Count;i++)
+                {
+                    Reservation reservation = new Reservation();
+                    reservation.SeatId = seats[i];
+                    var s = db.Seats.Find(seats[i]);
+                    s.status = true;
+                    reservation.Seat = db.Seats.Find(seats[i]);
+                    reservation.ClientId = 3;
+                    reservation.Client = db.Clients.Find(3);
+                    db.Reservations.Add(reservation);
+                    db.SaveChanges();
+                }
+                
+                
+
+                return RedirectToAction("Index");
+            }
+            /* foreach (var item in model.selectedSeats)
+                 {
+
+                     Reservation reservation = new Reservation();
+                     if (item.status == false)
+                     {
+                         item.status = true;
+                     reservation.Seat = item;
+                     reservation.SeatId = item.SeatId;
+
+
+                     db.Reservations.Add(reservation);
+                     db.SaveChanges();
+                 }
+
+
+                 }*/
+
+            return RedirectToAction("Index");
+
+
+
+            //ViewBag.ClientId = new SelectList(db.Clients, "ClientId", "Name", reservation.ClientId);
+            // ViewBag.SeatId = new SelectList(db.Seats, "SeatId", "SeatId", reservation.SeatId);
+            //return View(reservation);
+        }
+        /*public ActionResult Create(List<Seat> seats)
+        {
+            Reservation reservation = new Reservation();
+            for(int i=0;i<seats.Count();i++)
+            {
+                reservation.Seat = seats[i];
+                reservation.SeatId = seats[i].SeatId;
+                if (ModelState.IsValid)
+                {
+                    db.Reservations.Add(reservation);
+                    db.SaveChanges();
+                    
+                }
+            }
+
+            return RedirectToAction("Index");
+
+            //ViewBag.ClientId = new SelectList(db.Clients, "ClientId", "Name", reservation.ClientId);
+            // ViewBag.SeatId = new SelectList(db.Seats, "SeatId", "SeatId", reservation.SeatId);
+            return View(reservation);
+        }*/
+        /*public ActionResult Create([Bind(Include = "ReservationId,ClientId,SeatId")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
@@ -72,8 +141,9 @@ namespace projectIT.Controllers
             }
 
             ViewBag.ClientId = new SelectList(db.Clients, "ClientId", "Name", reservation.ClientId);
+            ViewBag.SeatId = new SelectList(db.Seats, "SeatId", "SeatId", reservation.SeatId);
             return View(reservation);
-        }
+        }*/
 
         // GET: Reservations/Edit/5
         public ActionResult Edit(int? id)
@@ -88,6 +158,7 @@ namespace projectIT.Controllers
                 return HttpNotFound();
             }
             ViewBag.ClientId = new SelectList(db.Clients, "ClientId", "Name", reservation.ClientId);
+            ViewBag.SeatId = new SelectList(db.Seats, "SeatId", "SeatId", reservation.SeatId);
             return View(reservation);
         }
 
@@ -96,7 +167,7 @@ namespace projectIT.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ReservationId,ClientId")] Reservation reservation)
+        public ActionResult Edit([Bind(Include = "ReservationId,ClientId,SeatId")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
@@ -105,6 +176,7 @@ namespace projectIT.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.ClientId = new SelectList(db.Clients, "ClientId", "Name", reservation.ClientId);
+            ViewBag.SeatId = new SelectList(db.Seats, "SeatId", "SeatId", reservation.SeatId);
             return View(reservation);
         }
 

@@ -14,13 +14,14 @@ namespace projectIT.Models
        
         public Client Client { get; set; }
 
-        public virtual List<Seat> Seats { get; set; }
+        public int SeatId { get; set; }
+
+        public Seat Seat { get; set; }
 
         public Reservation()
         {
-            Seats = new List<Seat>();
-        }
 
+        }
 
     }
 }
